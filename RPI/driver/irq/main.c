@@ -36,6 +36,7 @@ static dev_t					g_devno;							// major and minor number of this device
 static struct io_stData 		g_io_stData[DEF_IO_MODULE_DEVNUM];	// private data structure of this device
 static struct class 			*g_pxDevClass=NULL;					// for creating a class device
 
+volatile int g_state = 0;
 
 /*********************************************************************************************************************************************/
 /*********************************************************************************************************************************************/
@@ -219,6 +220,16 @@ int iodev_irq_probe(void)
 irqreturn_t iodev_irq_handler(int irqno, void *irqId)
 {
 	LOG_NOTI("Inside of IRQ handler");
+	if (0 == g_state) 
+	{
+		BIT_SET((unsigned long*)(g_io_stData[0].m_pvirt_base)+7,4);
+		g_state = 1;
+	}
+	else
+	{
+		BIT_SET((unsigned long*)(g_io_stData[0].m_pvirt_base)+10,4);
+		g_state = 0;
+	}
 	return IRQ_HANDLED;
 }
 
@@ -243,7 +254,7 @@ void iodev_irq_init(void)
 						,iodev_irq_handler \
 						,IRQF_TRIGGER_HIGH \
 						,DEF_IO_MODULE_NAME \
-						,g_io_stData[0].m_pxDevice);
+						,DEF_IO_MODULE_NAME);
 	
 	if (_errno)
 	{
@@ -253,6 +264,12 @@ void iodev_irq_init(void)
 	{
 		LOG_NOTI("IRQ Line: %d", _irq_line);
 	}
+}
+
+void iodev_irq_clean(void)
+{
+	free_irq(17,DEF_IO_MODULE_NAME);
+	gpio_free(17);
 }
 
 
@@ -371,6 +388,8 @@ void __exit io_clean(void) {
 	_errno = 0;
 	// Injection
 	LOG_NOTI("Injection.");
+	
+	iodev_irq_clean();
 	
 	// Unassign iomem address to device
 	platform_driver_unregister(&g_platform_driver);

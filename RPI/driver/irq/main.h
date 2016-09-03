@@ -77,6 +77,7 @@ int iodev_init_gpio(void);
  int iodev_irq_probe(void);
 irqreturn_t iodev_irq_handler(int irqno, void *irqId);
 void iodev_irq_init(void);
+void iodev_irq_clean(void);
 
 
 
