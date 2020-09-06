@@ -31,13 +31,6 @@ public:
 
 };
 
-template <class R, class T, class ... Args>
-struct _FP
-{
-	T * obj;
-	R(T::*fp)(Args...);
-};
-
 class Factory
 {
 public:
@@ -50,23 +43,25 @@ public:
 	template <class R, class T, class ... Args>
 	void RegisterCallback(string id, T *obj, R(T::*cb)(Args...))
 	{
-		CallbackMap<R,T,Args...>[id] = _FP<R,T,Args...>{obj,cb};
+		function<R(Args...)> f = [obj,cb](Args... args)->R {
+			return (obj->*cb)(args...);
+		};
+		CallbackMap<R,Args...>[id] = f;
 	}
 
-	template <class R, class T, class ... Args>
+	template <class R, class ... Args>
 	void Callback(string id, Args&& ... args)
 	{
-		auto v = CallbackMap<R,T,Args...>[id];
-		(v.obj->*(v.fp))(forward<Args...>(args)...);
+		CallbackMap<R,Args...>[id](forward<Args...>(args)...);
 	}
 
 private:
-	template <class R, class T, class ... Args>
-	static unordered_map<string, _FP<R,T,Args...>> CallbackMap;
+	template <class R, class ... Args>
+	static unordered_map<string, function<R(Args...)>> CallbackMap;
 };
 
-template <class R, class T, class ... Args>
-unordered_map<string, _FP<R,T,Args...>> Factory::CallbackMap;
+template <class R, class ... Args>
+unordered_map<string, function<R(Args...)>> Factory::CallbackMap;
 
 
 int main(int argc, char **argv)
@@ -76,7 +71,7 @@ int main(int argc, char **argv)
 	Factory f;
 	f.RegisterCallback("A",&a,&A::method);
 	f.RegisterCallback("B",&b,&B::method);
-	f.Callback<void,A>("A", 10);
-	f.Callback<int,B>("B");
+	f.Callback<void>("A", 10);
+	f.Callback<int>("B");
 	return 0;
 }
