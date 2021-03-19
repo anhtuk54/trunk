@@ -42,6 +42,7 @@ Module.symvers
 
 
 # Directories
+build/
 
 # Not files
 !.gitignore
