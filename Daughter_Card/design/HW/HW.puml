@@ -1,0 +1,17 @@
+@startuml
+title "Hardware component of Daughter Card"
+
+node "Computer" as Mon
+node "Embedded Computer" as Hub
+node "Micro Controller" as MCU
+node "Device 1" as Dev1
+node "Device 2" as Dev2
+node "Device N" as DevN
+
+Mon <-> Hub : Ethernet/Wireless
+Hub <-> MCU : SPI with Defined protocol (eg LBP16)
+MCU -d- Dev1
+MCU -d- Dev2
+MCU -d- DevN
+
+@enduml

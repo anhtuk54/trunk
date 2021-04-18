@@ -35,6 +35,7 @@
 *.tar
 *.xz
 Module.symvers
+.vscode
 
 # Tempo
 *.orig

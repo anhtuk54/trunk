@@ -1,0 +1,8 @@
+@startuml
+title "System Architural Diagram of Daughter Card"
+
+box "Jailhouse Hypervisor"
+    component "Root" 
+    component "Guest"
+end box
+@enduml
