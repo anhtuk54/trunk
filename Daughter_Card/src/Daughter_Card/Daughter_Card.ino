@@ -2,16 +2,15 @@
 #include "circular_buffer.h"
 #include <SPI.h>
 
-
 enum CMD {
   CMD_ECHO   = 0x00,
   CMD_WR_PIN = 0x01,
   CMD_RD_PIN = 0x02,
   CMD_WR_PWM = 0x03,
-  CMD_MAX=0x09
+  CMD_MAX=0x4
 };
 
-#define TEST
+// #define TEST
 
 #ifdef TEST
 CircularBuffer<uint16_t> cBuf;
@@ -20,12 +19,13 @@ CircularBuffer<uint16_t> cBuf;
 union uSpiPayload
 {
   uint16_t raw;
-  struct sSpiPayload {
-    uint8_t cmd   :3;
+  uint8_t bytes[2];
+  struct payload {
+    uint8_t cmd   :2;
     uint8_t pin   :6;
-    uint8_t value :7;
+    uint8_t value;
   } st __packed;
-};
+} __attribute__ ((aligned (2)));
 
 void write_to_io(const uint32_t &pin,const uint32_t &val)
 {
@@ -48,11 +48,11 @@ void xfer_to_master(const uint16_t data)
 void handler()
 { 
   uSpiPayload payload;
-  payload.raw  = REG_SPI0_RDR;
+  payload.raw  = REG_SPI0_RDR & 0xffff;
 
 #ifdef TEST
   // hooking data for printing later
-  cBuf.put2(payload.raw);
+  cBuf.put(payload.raw);
 #endif
   // processing data
   if (payload.st.cmd==CMD_WR_PIN) {
@@ -69,7 +69,6 @@ void setup()
   Serial.println("Setting up SPI...");
 
   pinMode(13,OUTPUT);
-  digitalWrite(13,HIGH);
   SPISlave.begin(&handler);
 
 	Serial.println("Done");
@@ -82,14 +81,14 @@ void loop() {
   // should do nothing, interrupt will handle all things.
 #ifdef TEST
   if ( !cBuf.empty()) {
-    // Serial.print("Data: ");
+    Serial.println("------------------------");
     uSpiPayload payload;
     payload.raw = cBuf.get();
     Serial.println( payload.raw,HEX);
-    Serial.println( payload.st.cmd,BIN);
-    Serial.println( payload.st.pin,BIN);
-    Serial.println( payload.st.value,BIN);
-    // Serial.print(" ");
+    Serial.println( payload.st.cmd,HEX);
+    Serial.println( payload.st.pin,HEX);
+    Serial.println( payload.st.value,HEX);
+    Serial.println("------------------------");
   }
 #endif
 }
