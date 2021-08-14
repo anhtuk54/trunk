@@ -1,0 +1,18 @@
+@startuml
+
+title "Main loop"
+
+participant Frame
+participant OdoEstimator  
+participant OdoVisualizer
+participant SLAMEstimator
+participant SLAMVisualizer
+participant Tracker
+
+actor -> Tracker : start()
+
+loop 
+Tracker -> Tracker : exec()
+end
+
+@enduml

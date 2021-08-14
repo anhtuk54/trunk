@@ -1,0 +1,37 @@
+@startuml
+title "Visual slam classes"
+
+package voslam {
+    package utils {
+        class Logger
+        class PerfMonitor
+    }
+
+    package core  {
+        class Frame
+        class KeyFrame
+        class Device
+        interface DeviceInterface
+    }
+
+    package odo {
+        class Odometry
+        class OdoEstimator
+    }
+
+    package slam {
+        class BagOfWords
+        class SLAMEstimator
+    }
+
+    package gui {
+        class OdoVisualizer
+        class SLAMVisualizer
+        class ControlPanel
+    }
+}
+
+core -u-> utils : use
+odo -l-> core : use
+
+@enduml
