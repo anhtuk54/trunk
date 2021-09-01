@@ -6,8 +6,8 @@
 * ***Fedora***: sudo dnf install SDL2-image-devel
 
 *Tool for v4l*
-* ***Ubuntu***:
-* ***Fedora***:
+* ***Ubuntu***: sudo apt-get install v4l-utils
+* ***Fedora***: sudo dnf install v4l-utils
 
 ## **Compiling**
 Project uses CMake build system, build steps are below:
