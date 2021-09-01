@@ -12,8 +12,8 @@ public:
     OdoVisualizer();
     ~OdoVisualizer();
 
-    void update();
-    void update(const cv::Mat &img);
+    void initialize();
+    void finalize();
 };
 
 GUI_NS_END

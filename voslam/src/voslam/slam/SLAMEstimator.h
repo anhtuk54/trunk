@@ -11,7 +11,8 @@ public:
     SLAMEstimator();
     ~SLAMEstimator();
 
-    void init();
+    void initialize();
+    void finalize();
 
 private:
 };

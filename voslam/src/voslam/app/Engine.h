@@ -1,9 +1,6 @@
 #pragma once
 
 #include "common/CommonDefs.h"
-#include "odo/OdoEstimator.h"
-#include "slam/SLAMEstimator.h"
-#include "core/Configuration.h"
 
 #include <string>
 
@@ -24,9 +21,8 @@ public:
     void init(const std::string &cfg);
 
 private:
-    voslam::core::Configuration mConfig;
-    voslam::odo::OdoEstimator mOdoEst;
-    voslam::slam::SLAMEstimator mSLAMEst;
+    class EngineImpl;
+    std::unique_ptr<EngineImpl> mImpl=nullptr;
 };
 
 APP_NS_END

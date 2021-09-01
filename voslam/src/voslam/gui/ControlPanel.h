@@ -10,6 +10,9 @@ class ControlPanel
 public:
     ControlPanel();
     ~ControlPanel();
+
+    void initialize();
+    void finalize();
 };
 
 GUI_NS_END

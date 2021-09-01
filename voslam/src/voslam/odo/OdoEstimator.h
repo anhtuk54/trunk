@@ -16,15 +16,9 @@ public:
     OdoEstimator();
     ~OdoEstimator();
 
-    void init();
-    void deinit();
-    void update();
-    
+    void initialize();
+    void finalize();
 private:
-    std::unique_ptr<voslam::core::Device> mDevice;
-    std::unique_ptr<voslam::gui::OdoVisualizer> mViewer;
-    std::unique_ptr<std::thread> mThread;
-    voslam::core::Frame mFrame;
 };
 
 ODO_NS_END

@@ -11,12 +11,11 @@ OdoVisualizer::OdoVisualizer()
 OdoVisualizer::~OdoVisualizer()
 {}
 
-void OdoVisualizer::update()
+void OdoVisualizer::initialize()
 {
-    // cv::imshow("Odometry viewer",tmp);
 }
 
-void OdoVisualizer::update(const cv::Mat &img)
+void OdoVisualizer::finalize()
 {
 }
 

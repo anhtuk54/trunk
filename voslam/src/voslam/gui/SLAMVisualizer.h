@@ -10,6 +10,9 @@ class SLAMVisualizer
 private:
     SLAMVisualizer();
     ~SLAMVisualizer();
+
+    void initialize();
+    void finalize();
 };
 
 GUI_NS_END

@@ -13,5 +13,13 @@ SLAMEstimator::~SLAMEstimator()
 {
 }
 
+void SLAMEstimator::initialize()
+{
+}
+
+void SLAMEstimator::finalize()
+{
+}
+
 SLAM_NS_END
 VOSLAM_NS_END

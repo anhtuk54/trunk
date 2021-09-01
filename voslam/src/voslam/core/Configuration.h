@@ -1,8 +1,8 @@
 #pragma once
 
-#include <string>
-
 #include "common/CommonDefs.h"
+
+#include <string>
 
 VOSLAM_NS_BEGIN
 CORE_NS_BEGIN
@@ -13,8 +13,19 @@ public:
     ConfigurationInfo();
     ~ConfigurationInfo();
 
-    void getConfig();
-    void setConfig();
+    template<typename T>
+    T getConfig(const std::string &key)
+    {
+        return T();
+    }
+
+    template<typename T>
+    void setConfig(const std::string &key, const T &value)
+    {
+    }
+
+private:
+    
 };
 
 class Configuration
@@ -24,6 +35,9 @@ public:
     ~Configuration();
 
     void load(const std::string &cfg);
+    ConfigurationInfo getDeviceConfig();
+    ConfigurationInfo getOdoConfig();
+    ConfigurationInfo getSLAMConfig();
 
 private:
     ConfigurationInfo mConfigInfo;

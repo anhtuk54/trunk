@@ -38,29 +38,50 @@ public:
     {
     }
 
+    /**
+     * @brief Set the Id object
+     * 
+     * @param id 
+     */
+    void setId(const std::string &id)
+    {
+        mId = id;
+    }
+
+    /**
+     * @brief Get the Id object
+     * 
+     * @return std::string 
+     */
+    std::string getId() const
+    {
+        return mId;
+    }
+
+    /**
+     * @brief Set the Payload object
+     * 
+     * @tparam T 
+     * @param pl 
+     */
     template<typename T>
     void setPayload(const T &pl)
     {
         mPayload = std::make_shared<T>(pl);   
     }
 
+    /**
+     * @brief Get the Playload object
+     * 
+     * @tparam T 
+     * @return T 
+     */
     template<typename T>
     T getPlayload() const
     {
         const T pl = *(T*)mPayload.get();
         return pl;
     }
-
-    void setId(const std::string &id)
-    {
-        mId = id;
-    }
-
-    std::string getId() const
-    {
-        return mId;
-    }
-
 
 private:
     std::string mId="";
